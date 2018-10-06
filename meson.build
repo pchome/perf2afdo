@@ -45,43 +45,33 @@ common_src = files([
 autofdo_include_path = include_directories('.')
 
 subdir('symbolize')
-
 subdir('third_party/perf_data_converter/src/quipper')
 
 
-# parts for create_gcov binary
-create_gcov_src = [
-  common_src,
-  symbolize_src,
-  'create_gcov.cc',
-  quipper_src,
-]
+# extend common sources
+common_src = [ common_src, symbolize_src, quipper_src ]
 
-executable('create_gcov', create_gcov_src,
-  dependencies : [
-    lib_openssl,   lib_glog, lib_gflags,
-#    symbolize_dep,
-    lib_elf,  lib_protobuf
-  ],
+
+# parts for create_gcov binary
+executable('create_gcov', common_src, 'create_gcov.cc',
+  dependencies : [ lib_openssl, lib_glog, lib_gflags, lib_elf,  lib_protobuf ],
   install : true)
 
 
 # parts for dump_gcov binary
-dump_gcov_src = [
-  common_src,
-  symbolize_src,
-  'profile_reader.cc',
-  'dump_gcov.cc',
-  quipper_src,
-]
-
-executable('dump_gcov', dump_gcov_src,
-  dependencies : [
-    lib_openssl,   lib_glog, lib_gflags,
-#    symbolize_dep,
-    lib_elf,  lib_protobuf
-  ],
+executable('dump_gcov', common_src, 'profile_reader.cc', 'dump_gcov.cc',
+  dependencies : [ lib_openssl, lib_glog, lib_gflags, lib_elf,  lib_protobuf ],
   install : true)
+
+
+# parts for create_llvm_prof binary
+if get_option('enable_llvm')
+  llvm_dep = dependency('llvm', version : '>= 5.0', modules: ['profiledata'])
+
+  executable('create_llvm_prof', common_src, 'llvm_profile_writer.cc', 'create_llvm_prof.cc',
+    dependencies : [ lib_openssl, lib_glog, lib_gflags, lib_elf, lib_protobuf, llvm_dep ],
+    install : true)
+endif
 
 
 # wrappers

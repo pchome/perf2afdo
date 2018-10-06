@@ -1,0 +1,3 @@
+#!/bin/sh
+
+dump_gcov -gcov_version=1 -logtostderr -colorlogtostderr $@

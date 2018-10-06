@@ -1,3 +1,0 @@
-#!/bin/sh
-
-create_llvm_prof -gcov_version=1 -use_lbr=false -logtostderr -colorlogtostderr $@

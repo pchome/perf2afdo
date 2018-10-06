@@ -82,3 +82,7 @@ executable('dump_gcov', dump_gcov_src,
     lib_elf,  lib_protobuf
   ],
   install : true)
+
+
+# wrappers
+subdir('bin')

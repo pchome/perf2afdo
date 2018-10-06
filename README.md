@@ -5,11 +5,11 @@ See https://github.com/google/autofdo and https://github.com/google/perf_data_co
 
 **WIP!** For use in Gentoo
 
-Original sources mostly unchanged, dependencies pressent in Gentoo portage tree skipped, tests skipped
-`quipper` state : fdc658410dfa9d01b906b115e6fef35c308e55e1
-`autofdo` state : db9ca300dd8fa367136fe4a34cc10b8668ded256
+Original sources mostly unchanged, dependencies pressent in Gentoo portage tree are skipped, tests are skipped
+* `quipper` state : fdc658410dfa9d01b906b115e6fef35c308e55e1
+* `autofdo` state : db9ca300dd8fa367136fe4a34cc10b8668ded256
 
-The only patch currently used will be applied by ebuild
+The only patch currently required (will be applied by ebuild):
 ```patch
 --- a/sample_reader.cc
 +++ b/sample_reader.cc
@@ -22,4 +22,15 @@ The only patch currently used will be applied by ebuild
        continue;
      }
      if (MatchBinary(event.dso_and_offset.dso_name(), focus_binary)) {
+```
+
+#### Build manually
+```
+# First: apply patch for sample_reader.cc
+# Next: use following commands
+meson --buildtype="release" --prefix /tmp/perf2afdo /tmp/perf2afdo.x86_64
+cd /tmp/perf2afdo.x86_64
+# optional step (see "meson configure" command):
+#meson configure -Dcpp_args="-fwhole-program"
+ninla -j4 install
 ```

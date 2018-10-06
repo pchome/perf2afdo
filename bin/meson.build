@@ -3,7 +3,6 @@ bin_cfg.set('uselbr', get_option('use_lbr')?'true':'false')
 
 wrappers = [
   'perf2afdo-create',
-  'perf2afdo-create-no-lbr',
   'perf2afdo-dump',
   'perf2afdo-llvm-create',
 ]

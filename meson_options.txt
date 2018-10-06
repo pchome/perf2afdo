@@ -1,0 +1,2 @@
+option('enable_llvm', type : 'boolean', value : false,
+  description: 'Build profile converter tool for LLVM')

@@ -25,12 +25,12 @@ The only patch currently required (will be applied by ebuild):
 ```
 
 #### Build manually
-```
+```bash
 # First: apply patch for sample_reader.cc
 # Next: use following commands
 meson --buildtype="release" --prefix /tmp/perf2afdo /tmp/perf2afdo.x86_64
 cd /tmp/perf2afdo.x86_64
 # optional step (see "meson configure" command):
 #meson configure -Dcpp_args="-fwhole-program"
-ninla -j4 install
+ninja -j4 install
 ```

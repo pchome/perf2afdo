@@ -1,4 +1,6 @@
 option('enable_llvm', type : 'boolean', value : false,
   description: 'Build profile converter tool for LLVM')
 option('use_lbr', type : 'boolean', value : true,
-  description: 'Whether to use lbr profile.')
+  description: 'Last Branch Record (LBR)')
+option('use_pebs', type : 'boolean', value : true,
+  description: 'Processor Event-Based Sampling (PEBS)')

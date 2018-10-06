@@ -1,0 +1,23 @@
+#!/bin/sh
+
+PEBS="@pebs@"
+
+# For hardware support check `$ dmesg | grep "Performance Events"`
+# or `$ dmesg | grep perf:`
+# output examples:
+# Performance Events: AMD PMU driver.
+# Performance Events: PEBS fmt1+, IvyBridge events, 16-deep LBR, full-width counters, Intel PMU driver.
+
+if [ "$PEBS" == "True" ]; then
+  # Intel PEBS variant
+  # check `$ dmesg | grep PEBS`
+
+  perf record -F 99 -b -e BR_INST_RETIRED.NEAR_TAKEN:pp $@
+else
+  # AMD variant
+  # umask not used by Fam 10h 0xC4 event,
+  # added to mimic Intel's BR_INST_RETIRED.NEAR_TAKEN
+  # see /usr/src/linux/tools/perf/pmu-events/arch/x86/*/pipeline.json
+
+  perf record -F 99 -e 'cpu/event=0xc4,umask=0x20,name=BR_INST_RETIRED.TAKEN,period=400009/' $@
+fi

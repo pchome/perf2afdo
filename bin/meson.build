@@ -6,7 +6,7 @@ bin_cfg.set('pebs',   get_option('use_pebs'))
 wrappers = [
   'perf2afdo-create',
   'perf2afdo-dump',
-  'perf2afdo-record.in',
+  'perf2afdo-record',
 ]
 
 foreach wrp : wrappers

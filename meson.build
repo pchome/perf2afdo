@@ -59,19 +59,15 @@ subdir('third_party/perf_data_converter/src/quipper')
 common_src = [ common_src, symbolize_src, quipper_src ]
 
 
-# parts for create_gcov binary
-executable('create_gcov', common_src, 'create_gcov.cc',
-  dependencies : common_deps,
-  install : true)
+# create binaries
+foreach m : [ 'create_gcov', 'sample_merger' ]
+  executable(m, common_src, m+'.cc', dependencies : common_deps, install : true)
+endforeach
 
+foreach m : [ 'dump_gcov', 'profile_diff', 'profile_merger', 'profile_update' ]
+  executable(m, common_src, 'profile_reader.cc', m+'.cc', dependencies : common_deps, install : true)
+endforeach
 
-# parts for dump_gcov binary
-executable('dump_gcov', common_src, 'profile_reader.cc', 'dump_gcov.cc',
-  dependencies : common_deps,
-  install : true)
-
-
-# parts for create_llvm_prof binary
 if get_option('enable_llvm')
   executable('create_llvm_prof', common_src, 'llvm_profile_writer.cc', 'create_llvm_prof.cc',
     dependencies : common_deps,

@@ -7,6 +7,10 @@ wrappers = [
   'perf2afdo-create',
   'perf2afdo-dump',
   'perf2afdo-record',
+  'perf2afdo-diff',
+  'perf2afdo-merge',
+  'perf2afdo-sample-merge',
+  'perf2afdo-update',
 ]
 
 foreach wrp : wrappers

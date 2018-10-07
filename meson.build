@@ -16,7 +16,9 @@ cdata = configuration_data()
 
 # Check LLVM
 if get_option('enable_llvm')
-  find_program('llvm-config')
+  llvm_dep = dependency('llvm', version : '>= 5.0',
+    modules: [ 'profiledata' ]
+  )
   cdata.set('HAVE_LLVM', 1)
   cdata.set('CREATE_LLVM_PROF',1)
 endif
@@ -42,6 +44,11 @@ common_src = files([
   'profile.cc',
 ])
 
+common_deps = [
+  lib_openssl, lib_glog, lib_gflags, lib_elf,  lib_protobuf,
+  get_option('enable_llvm') ? llvm_dep : []
+]
+
 autofdo_include_path = include_directories('.')
 
 subdir('symbolize')
@@ -54,22 +61,20 @@ common_src = [ common_src, symbolize_src, quipper_src ]
 
 # parts for create_gcov binary
 executable('create_gcov', common_src, 'create_gcov.cc',
-  dependencies : [ lib_openssl, lib_glog, lib_gflags, lib_elf,  lib_protobuf ],
+  dependencies : common_deps,
   install : true)
 
 
 # parts for dump_gcov binary
 executable('dump_gcov', common_src, 'profile_reader.cc', 'dump_gcov.cc',
-  dependencies : [ lib_openssl, lib_glog, lib_gflags, lib_elf,  lib_protobuf ],
+  dependencies : common_deps,
   install : true)
 
 
 # parts for create_llvm_prof binary
 if get_option('enable_llvm')
-  llvm_dep = dependency('llvm', version : '>= 5.0', modules: ['profiledata'])
-
   executable('create_llvm_prof', common_src, 'llvm_profile_writer.cc', 'create_llvm_prof.cc',
-    dependencies : [ lib_openssl, lib_glog, lib_gflags, lib_elf, lib_protobuf, llvm_dep ],
+    dependencies : common_deps,
     install : true)
 endif
 

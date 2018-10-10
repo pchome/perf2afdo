@@ -6,7 +6,7 @@ See https://github.com/google/autofdo and https://github.com/google/perf_data_co
 **WIP!** For use in Gentoo
 
 Original sources mostly unchanged, dependencies pressent in Gentoo portage tree are skipped, tests are skipped
-* `quipper` state : fdc658410dfa9d01b906b115e6fef35c308e55e1
+* `quipper` state : 4140ba0c070936db508c0688a9a1c63b6854f0ed
 * `autofdo` state : db9ca300dd8fa367136fe4a34cc10b8668ded256
 
 The only patch currently required (will be applied by ebuild):
